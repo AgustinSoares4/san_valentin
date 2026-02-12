@@ -3,12 +3,13 @@ import { SkipBack, SkipForward, Play, Pause, Volume1, Volume2 } from 'lucide-rea
 
 const VOLUME_STEP = 0.15
 
-export default function MiniPlayer({ tracks = [], sharedAudioRef }) {
-  const [currentIndex, setCurrentIndex] = useState(0)
+export default function MiniPlayer({ tracks = [], sharedAudioRef, initialTrackIndex = 0 }) {
+  const [currentIndex, setCurrentIndex] = useState(initialTrackIndex)
   const [isPlaying, setIsPlaying] = useState(true)
   const [volume, setVolume] = useState(0.7)
   const audioRef = useRef(null)
   const didSkipInitialSrcRef = useRef(false)
+  const initialTrackIndexRef = useRef(initialTrackIndex)
 
   const total = tracks.length
   const currentTrack = total > 0 ? tracks[currentIndex] : null
@@ -22,7 +23,7 @@ export default function MiniPlayer({ tracks = [], sharedAudioRef }) {
         audioRef.current = null
       }
     }
-    const audio = new Audio(tracks[0].src)
+    const audio = new Audio(tracks[initialTrackIndex]?.src ?? tracks[0]?.src)
     audio.volume = volume
     audioRef.current = audio
     return () => {
@@ -35,8 +36,8 @@ export default function MiniPlayer({ tracks = [], sharedAudioRef }) {
   // When track or play state changes, update src and play/pause (do not depend on volume)
   useEffect(() => {
     if (!audioRef.current || !currentTrack) return
-    // When using shared ref, parent already set src and started track 0; avoid resetting src on first run so the song does not restart
-    const skipSrc = sharedAudioRef && currentIndex === 0 && !didSkipInitialSrcRef.current
+    // When using shared ref, parent already set src and started at initialTrackIndex; avoid resetting src on first run so the song does not restart
+    const skipSrc = sharedAudioRef && currentIndex === initialTrackIndexRef.current && !didSkipInitialSrcRef.current
     if (skipSrc) didSkipInitialSrcRef.current = true
     if (!skipSrc) audioRef.current.src = currentTrack.src
     audioRef.current.volume = volume

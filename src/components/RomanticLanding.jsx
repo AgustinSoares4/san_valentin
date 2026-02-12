@@ -10,12 +10,15 @@ export default function RomanticLanding() {
   const [accepted, setAccepted] = useState(false)
   const [carouselIndex, setCarouselIndex] = useState(0)
   const sharedAudioRef = useRef(null)
+  const initialTrackIndexRef = useRef(0)
   const { fire: fireConfetti } = useConfetti()
 
   const startAudio = () => {
     if (sharedAudioRef.current) return
-    const src = config.acceptSound || playlist[0]?.src
-    if (!src) return
+    if (!playlist.length) return
+    const randomIndex = Math.floor(Math.random() * playlist.length)
+    const src = playlist[randomIndex].src
+    initialTrackIndexRef.current = randomIndex
     const audio = new Audio(src)
     audio.volume = 0.7
     sharedAudioRef.current = audio
@@ -123,7 +126,7 @@ export default function RomanticLanding() {
             </p>
 
             <div className="mt-8 flex w-full justify-center">
-              <MiniPlayer tracks={playlist} sharedAudioRef={sharedAudioRef} />
+              <MiniPlayer tracks={playlist} sharedAudioRef={sharedAudioRef} initialTrackIndex={initialTrackIndexRef.current} />
             </div>
           </motion.section>
         )}

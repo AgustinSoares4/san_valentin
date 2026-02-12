@@ -23,7 +23,7 @@ export default function FakeRecaptcha({ checked, onCheck }) {
               ) : null}
             </div>
             <span className="text-sm text-gray-700">
-              Verify you are the best girlfriend
+              Vamos a chequear si sos la mejor novia del mundo
             </span>
           </button>
           <div className="mt-3 flex items-center gap-1 text-[10px] text-gray-500">

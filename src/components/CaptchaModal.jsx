@@ -52,7 +52,7 @@ export default function CaptchaModal({ onVerify, onClose }) {
       >
         <div className="shrink-0 border-b border-gray-200 p-4">
           <h2 className="text-sm font-medium text-gray-800 sm:text-base">
-            Select all squares with: <strong>THE GIRL OF MY DREAMS</strong>
+            Seleccioná todas las fotos con: <strong>LA CHICA DE MIS SUEÑOS</strong>
           </h2>
         </div>
         <div className="min-h-0 flex-1 overflow-auto p-4">
